@@ -15,8 +15,17 @@ red = (255, 0 ,0)
 
 field = [[random.choice([yellow, red]) for _ in range(4)] for _ in range(4)]
 
-running = True
+def change_color (x, y):
 
+  if 0 <= x < 4 and 0 <= y < 4:
+    field[x][y] = red if field[x][y] == yellow else yellow
+  for i, j in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+    dx = x + i
+    dy = y + j
+    if 0 <= dx < 4 and 0 <= dy < y:      # проверка, чтобы не выйти за границы поля
+      fild[dx][dy] = red if field[dx][dy] == yellow else yellow
+
+running = True
 while running:
   
   for event in pygame.event.get():    # условие для считывания действий пользователя
@@ -26,7 +35,8 @@ while running:
       x, y = pygame.mouse.get_pos()
       grid_x = x // cell_size
       grid_y = y // cell_size
-  
+      change_color(grid_x, grid_y)
+      
   screen.fill((255, 255, 255))
   
   for i in range (4):
