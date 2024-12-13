@@ -1,4 +1,5 @@
 import pygame
+import random
 
 pygame.init()
 
@@ -13,3 +14,21 @@ yellow = (255, 230, 0)
 red = (255, 0 ,0)
 
 field = [[random.choice([yellow, red]) for _ in range(4)] for _ in range(4)]
+
+running = True
+
+while running:
+  
+  for event in pygame.event.get():    # условие для считывания действий пользователя
+    if event.type == pygame.QUIT:
+      running == False
+    elif event.type == pygame.MOUSEBUTTONDOWN:
+      x, y = pygame.mouse.get_pos()
+            grid_x = x // cell_size
+            grid_y = y // cell_size
+
+  screen.fill((255, 255, 255))
+  
+  pygame.display.flip()    # для обновления экрана
+  
+pygame.quit()
