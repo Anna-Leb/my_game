@@ -27,6 +27,10 @@ while running:
             grid_x = x // cell_size
             grid_y = y // cell_size
 
+  for i in range (4):
+    for j in range (4):
+      color = field[i][j]
+      pygame.draw.circle(screen, color, (i * cell_size + cell_size // 2, y * cell_size + cell_size //2), cell_size // 2 - 5)
   screen.fill((255, 255, 255))
   
   pygame.display.flip()    # для обновления экрана
