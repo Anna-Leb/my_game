@@ -24,15 +24,15 @@ while running:
       running == False
     elif event.type == pygame.MOUSEBUTTONDOWN:
       x, y = pygame.mouse.get_pos()
-            grid_x = x // cell_size
-            grid_y = y // cell_size
+      grid_x = x // cell_size
+      grid_y = y // cell_size
   
   screen.fill((255, 255, 255))
   
   for i in range (4):
     for j in range (4):
       color = field[i][j]
-      pygame.draw.circle(screen, color, (i * cell_size + cell_size // 2, y * cell_size + cell_size //2), cell_size // 2 - 5)
+      pygame.draw.circle(screen, color, (i * cell_size + cell_size // 2, j * cell_size + cell_size //2), cell_size // 2 - 5)
 
   all_same = True
   for row in field:
