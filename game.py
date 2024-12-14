@@ -21,7 +21,7 @@ font = pygame.font.Font(None, font_size)
 
 rules_font_size = 39  
 rules_font = pygame.font.Font(None, rules_font_size)
-rules_text = "Тут будут правила игры, но пока что это просто текст."
+rules_text = "Основная цель игры: сделать все кружки одинаковыми по цвету. Поле представляет собой таблицу 4*4 клетки. В клетках размещены кружки разных цветов. При щелчке мышкой по кружку, его цвет и цвет соседних кружков изменяется на противоположный."
 
 width, height = 600, 600
 screen = pygame.display.set_mode((width, height))
