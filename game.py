@@ -19,6 +19,10 @@ button_text_color = (255, 255, 255)
 font_size = 30
 font = pygame.font.Font(None, font_size)
 
+rules_font_size = 39  
+rules_font = pygame.font.Font(None, rules_font_size)
+rules_text = "Тут будут правила игры, но пока что это просто текст."
+
 width, height = 600, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Переверни фишки")
@@ -27,6 +31,9 @@ cell_size = width // 4
 
 yellow = (255, 230, 0)
 red = (255, 0 ,0)
+
+title_font_size = 50
+title_font = pygame.font.Font(None, title_font_size)
 
 def draw_button(text, x, y):
     button_rect = pygame.Rect(x, y, button_width, button_height)
@@ -95,7 +102,6 @@ def main_game():
             text = font.render("Задача решена!", True, (0, 0, 0))
             screen.blit(text, (width // 2 - text.get_width() // 2, height // 2 - text.get_height() // 2))
 
-
         pygame.display.flip()    # для обновления экрана
         
 running = True
@@ -106,14 +112,24 @@ while running:
             pygame.quit()
             sys.exit()
             
+    screen.fill((255, 255, 255))        # метод для очистки экрана
+    
+    title_label = title_font.render("Логическая игра", True, (0, 0, 0))
+    title_label2 = title_font.render("'Переверни фишки'", True, (0, 0, 0))
+    screen.blit(title_label, (width // 2 - title_label.get_width() // 2, 100))
+    screen.blit(title_label2, (width // 2 - title_label2.get_width() // 2, 160))
+    
     button1_y = (height - button_height) // 2 - button_height
+    button2_y = button1_y + button_height + 10             # +10 для оступа 10 пикселей между кнопками
+    
     button1_rect, button1_hovered = draw_button("Начать игру!", (width - button_width) // 2, button1_y)
+    button2_rect, button2_hovered = draw_button("Правила игры", (width - button_width) // 2, button2_y)
 
     mouse_buttons = pygame.mouse.get_pressed()
     if mouse_buttons[0]:
         if button1_rect.collidepoint(pygame.mouse.get_pos()):
             main_game()
 
-    screen.fill((255, 255, 255))        # метод для очисти экрана
+    pygame.display.flip()
     
 pygame.quit()
