@@ -35,7 +35,7 @@ red = (255, 0 ,0)
 title_font_size = 50
 title_font = pygame.font.Font(None, title_font_size)
 
-def draw_button(text, x, y):
+def draw_button(text, x, y):                # функция для отображения кнопок на экране
     button_rect = pygame.Rect(x, y, button_width, button_height)
     mouse_pos = pygame.mouse.get_pos()
 
@@ -103,7 +103,8 @@ def main_game():
             screen.blit(text, (width // 2 - text.get_width() // 2, height // 2 - text.get_height() // 2))
 
         pygame.display.flip()    # для обновления экрана
-        
+
+# запуск стартового экрана программы        
 running = True
 bg_sound_menu.play(-1)
 while running:
@@ -129,7 +130,25 @@ while running:
     if mouse_buttons[0]:
         if button1_rect.collidepoint(pygame.mouse.get_pos()):
             main_game()
+            
+    if button2_hovered:                      # проверка наведения для вывода текста на экран
+        words = rules_text.split(' ')        # метод для разделения длинного текста на строки
+        lines = []
+        current_line = ""
+        
+        for word in words:
+            test_line = current_line + word + ' '
+            if rules_font.size(test_line)[0] <= width - 40:  # - 40 пикселей для отступа в тексте
+                current_line = test_line
+            else:
+                lines.append(current_line)
+                current_line = word + ' '
+        lines.append(current_line)
 
+        for i, line in enumerate(lines):
+            rules_label = rules_font.render(line.strip(), True, (0, 0, 0))
+            rules_rect = rules_label.get_rect(center=(width // 2, button2_y + button_height + 30 + (i * rules_font.get_height())))
+            screen.blit(rules_label, rules_rect)
     pygame.display.flip()
     
 pygame.quit()
