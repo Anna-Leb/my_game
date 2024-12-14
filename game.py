@@ -3,6 +3,8 @@ import random
 
 pygame.init()
 
+sound = pygame.mixer.Sound('щелчок.mp3')
+
 width = 400
 height = 400
 screen = pygame.display.set_mode((width, height))
@@ -34,6 +36,7 @@ while running:
             x, y = pygame.mouse.get_pos()
             grid_x = x // cell_size
             grid_y = y // cell_size
+            sound.play()                    # для воспроизведения звука при нажатии
             change_color(grid_x, grid_y)
       
     screen.fill((255, 255, 255))
