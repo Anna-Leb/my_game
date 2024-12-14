@@ -8,6 +8,16 @@ sound = pygame.mixer.Sound('щелчок.mp3')
 
 bg_sound_game = pygame.mixer.Sound('фон.mp3')  
 bg_sound_game.set_volume(0.05)
+bg_sound_menu = pygame.mixer.Sound('меню.mp3')  
+bg_sound_menu.set_volume(0.05)
+
+button_width, button_height = 200, 50
+button_color = (0, 120, 255)
+button_hover_color = (0, 150, 255)
+button_text_color = (255, 255, 255)
+
+font_size = 30
+font = pygame.font.Font(None, font_size)
 
 width, height = 600, 600
 screen = pygame.display.set_mode((width, height))
@@ -18,10 +28,28 @@ cell_size = width // 4
 yellow = (255, 230, 0)
 red = (255, 0 ,0)
 
+def draw_button(text, x, y):
+    button_rect = pygame.Rect(x, y, button_width, button_height)
+    mouse_pos = pygame.mouse.get_pos()
+
+    if button_rect.collidepoint(mouse_pos):
+        pygame.draw.rect(screen, button_hover_color, button_rect)
+        return button_rect, True
+    else:
+        pygame.draw.rect(screen, button_color, button_rect)
+
+    label = font.render(text, True, button_text_color)
+    text_rect = label.get_rect(center=button_rect.center)
+    screen.blit(label, text_rect)
+
+    return button_rect, False
 
 def main_game():
     sound = pygame.mixer.Sound('щелчок.mp3')
     field = [[random.choice([yellow, red]) for _ in range(4)] for _ in range(4)]
+    
+    bg_sound_menu.stop()
+    bg_sound_game.play(-1)
     
     def change_color (x, y):
         if 0 <= x < 4 and 0 <= y < 4:
@@ -66,7 +94,26 @@ def main_game():
             font = pygame.font.Font(None, 50)
             text = font.render("Задача решена!", True, (0, 0, 0))
             screen.blit(text, (width // 2 - text.get_width() // 2, height // 2 - text.get_height() // 2))
-    
+
+
         pygame.display.flip()    # для обновления экрана
-  
+        
+running = True
+bg_sound_menu.play(-1)
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+            
+    button1_y = (height - button_height) // 2 - button_height
+    button1_rect, button1_hovered = draw_button("Начать игру!", (width - button_width) // 2, button1_y)
+
+    mouse_buttons = pygame.mouse.get_pressed()
+    if mouse_buttons[0]:
+        if button1_rect.collidepoint(pygame.mouse.get_pos()):
+            main_game()
+
+    screen.fill((255, 255, 255))        # метод для очисти экрана
+    
 pygame.quit()
