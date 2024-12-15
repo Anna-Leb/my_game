@@ -1,15 +1,12 @@
 import pygame
 import random
 import sys
+import time
 
 pygame.init()
 
-sound = pygame.mixer.Sound('щелчок.mp3')
-
-bg_sound_game = pygame.mixer.Sound('фон.mp3')  
-bg_sound_game.set_volume(0.05)
-bg_sound_menu = pygame.mixer.Sound('меню.mp3')  
-bg_sound_menu.set_volume(0.05)
+width, height = 600, 600
+game_size = 500
 
 button_width, button_height = 200, 50
 button_color = (60, 180, 70)
@@ -19,15 +16,14 @@ button_text_color = (255, 255, 255)
 font_size = 30
 font = pygame.font.Font(None, font_size)
 
+screen = pygame.display.set_mode((width, height))
+pygame.display.set_caption("Переверни фишки")
+
 rules_font_size = 39  
 rules_font = pygame.font.Font(None, rules_font_size)
 rules_text = "Поле представляет собой таблицу 4*4 клетки. В клетках размещены кружки разных цветов. При щелчке мышкой по кружку, его цвет и цвет соседних кружков изменяется на противоположный. Основная цель игры: сделать все кружки одинаковыми по цвету."
 
-width, height = 600, 600
-screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Переверни фишки")
-
-cell_size = width // 4
+cell_size = game_size // 4
 
 yellow = (255, 230, 0)
 red = (255, 0 ,0)
@@ -35,11 +31,16 @@ red = (255, 0 ,0)
 title_font_size = 50
 title_font = pygame.font.Font(None, title_font_size)
 
+bg_sound_game = pygame.mixer.Sound('фон.mp3')  
+bg_sound_game.set_volume(0.05)
+bg_sound_menu = pygame.mixer.Sound('меню.mp3')  
+bg_sound_menu.set_volume(0.05)
+
 def draw_button(text, x, y):                # функция для отображения кнопок на экране
     button_rect = pygame.Rect(x, y, button_width, button_height)
     mouse_pos = pygame.mouse.get_pos()
 
-    if button_rect.collidepoint(mouse_pos):
+    if button_rect.collidepoint(mouse_pos):    # условие для проверки наведения мыши на кнопку
         pygame.draw.rect(screen, button_hover_color, button_rect)
         return button_rect, True
     else:
@@ -51,16 +52,22 @@ def draw_button(text, x, y):                # функция для отобра
 
     return button_rect, False
 
-def main_game():
+def main_game():        # функция для основной игры
     sound = pygame.mixer.Sound('щелчок.mp3')
     field = [[random.choice([yellow, red]) for _ in range(4)] for _ in range(4)]
     
     bg_sound_menu.stop()
     bg_sound_game.play(-1)
+
+    start_time = time.time()
+    moves_count = 0
     
     def change_color (x, y):
+        nonlocal moves_count
+        
         if 0 <= x < 4 and 0 <= y < 4:
             field[x][y] = red if field[x][y] == yellow else yellow
+            moves_count += 1
         for i, j in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
             dx = x + i
             dy = y + j
@@ -76,17 +83,32 @@ def main_game():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
-                grid_x = x // cell_size
-                grid_y = y // cell_size
+                grid_x = (x - 50) // cell_size    # -50 для учета рамки вокруг фишек
+                grid_y = (y - 50) // cell_size
                 sound.play()                    # для воспроизведения звука при нажатии
                 change_color(grid_x, grid_y)
           
         screen.fill((255, 255, 255))
-      
+        
+        pygame.draw.rect(screen, (200, 200, 200), (25, 25, game_size + 50, game_size + 50))  # Рамка
+        pygame.draw.rect(screen, (255, 255, 255), (50, 50, game_size, game_size)) 
+        
+        elapsed_time = time.time() - start_time
+        minutes = int(elapsed_time // 60)
+        seconds = int(elapsed_time % 60)
+        milliseconds = int((elapsed_time * 1000) % 1000) // 10  # Первые две цифры миллисекунд
+        timer_text = f"Время: {minutes:02d}:{seconds:02d}:{milliseconds:02d}"
+        timer_label = font.render(timer_text, True, (0, 0, 0))
+        screen.blit(timer_label, (60, 10))  # Положение таймера
+
+        moves_text = f"Ходы: {moves_count}"
+        moves_label = font.render(moves_text, True, (0, 0, 0))
+        screen.blit(moves_label, (width - 160, 10))
+        
         for i in range (4):
             for j in range (4):
                 color = field[i][j]
-                pygame.draw.circle(screen, color, (i * cell_size + cell_size // 2, j * cell_size + cell_size //2), cell_size // 2 - 5)
+                pygame.draw.circle(screen, color, (50 + (i * cell_size) + cell_size // 2, 50 + (j * cell_size) + cell_size //2), cell_size // 2 - 5)
     
         all_same = True
         for row in field:
@@ -98,7 +120,6 @@ def main_game():
                 break
     
         if all_same:
-            font = pygame.font.Font(None, 50)
             text = font.render("Задача решена!", True, (0, 0, 0))
             screen.blit(text, (width // 2 - text.get_width() // 2, height // 2 - text.get_height() // 2))
 
