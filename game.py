@@ -96,13 +96,12 @@ def main_game():        # функция для основной игры
         elapsed_time = time.time() - start_time
         minutes = int(elapsed_time // 60)
         seconds = int(elapsed_time % 60)
-        milliseconds = int((elapsed_time * 1000) % 1000) // 10  # Первые две цифры миллисекунд
-        timer_text = f"Время: {minutes:02d}:{seconds:02d}:{milliseconds:02d}"
-        timer_label = font.render(timer_text, True, (0, 0, 0))
+        timer_text = f"Время: {minutes:02d}:{seconds:02d}"
+        timer_label = font.render(timer_text, True, (80, 80, 80))
         screen.blit(timer_label, (60, 10))  # Положение таймера
 
         moves_text = f"Ходы: {moves_count}"
-        moves_label = font.render(moves_text, True, (0, 0, 0))
+        moves_label = font.render(moves_text, True, (80, 80, 80))
         screen.blit(moves_label, (width - 160, 10))
         
         for i in range (4):
