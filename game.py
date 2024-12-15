@@ -32,9 +32,9 @@ title_font_size = 50
 title_font = pygame.font.Font(None, title_font_size)
 
 bg_sound_game = pygame.mixer.Sound('фон.mp3')  
-bg_sound_game.set_volume(0.05)
+bg_sound_game.set_volume(0.1)
 bg_sound_menu = pygame.mixer.Sound('меню.mp3')  
-bg_sound_menu.set_volume(0.05)
+bg_sound_menu.set_volume(0.1)
 
 def draw_button(text, x, y):                # функция для отображения кнопок на экране
     button_rect = pygame.Rect(x, y, button_width, button_height)
