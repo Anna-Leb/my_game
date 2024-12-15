@@ -12,8 +12,8 @@ bg_sound_menu = pygame.mixer.Sound('меню.mp3')
 bg_sound_menu.set_volume(0.05)
 
 button_width, button_height = 200, 50
-button_color = (0, 120, 255)
-button_hover_color = (0, 150, 255)
+button_color = (60, 180, 70)
+button_hover_color = (90, 210, 70)
 button_text_color = (255, 255, 255)
 
 font_size = 30
@@ -21,7 +21,7 @@ font = pygame.font.Font(None, font_size)
 
 rules_font_size = 39  
 rules_font = pygame.font.Font(None, rules_font_size)
-rules_text = "Основная цель игры: сделать все кружки одинаковыми по цвету. Поле представляет собой таблицу 4*4 клетки. В клетках размещены кружки разных цветов. При щелчке мышкой по кружку, его цвет и цвет соседних кружков изменяется на противоположный."
+rules_text = "Поле представляет собой таблицу 4*4 клетки. В клетках размещены кружки разных цветов. При щелчке мышкой по кружку, его цвет и цвет соседних кружков изменяется на противоположный. Основная цель игры: сделать все кружки одинаковыми по цвету."
 
 width, height = 600, 600
 screen = pygame.display.set_mode((width, height))
